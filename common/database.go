@@ -7,6 +7,8 @@ import (
 	"jim.zhu/ginessential/model"
 )
 
+var DB *gorm.DB
+
 //InitDB init db
 func InitDB() *gorm.DB {
 	dirvername := "mysql"
@@ -28,6 +30,6 @@ func InitDB() *gorm.DB {
 		panic("fail to connect database , err: " + err.Error())
 	}
 	db.AutoMigrate(&model.User{})
+	DB = db
 	return db
 }
-

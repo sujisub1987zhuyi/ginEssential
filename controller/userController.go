@@ -1,4 +1,4 @@
-package  controller
+package controller
 
 import (
 	"fmt"
@@ -11,7 +11,7 @@ import (
 )
 
 func Register(ctx *gin.Context) {
-	db := common.InitDB()
+
 	//获取参数
 	name := ctx.PostForm("name")
 	telephone := ctx.PostForm("telephone")
@@ -34,7 +34,7 @@ func Register(ctx *gin.Context) {
 	fmt.Printf("name=%v,telephone=%v,password=%v", name, telephone, password)
 
 	//判断手机号是否存在
-	if isTelephoneExist(db, telephone) {
+	if isTelephoneExist(common.DB, telephone) {
 		ctx.JSON(http.StatusUnprocessableEntity, gin.H{"code": 422, "msg": "用户已经存在！"})
 		return
 	}
@@ -45,7 +45,7 @@ func Register(ctx *gin.Context) {
 		Telephone: telephone,
 		Password:  password,
 	}
-	db.Create(&newUser)
+	common.DB.Create(&newUser)
 
 	//返回结果
 
@@ -63,6 +63,3 @@ func isTelephoneExist(db *gorm.DB, telephone string) bool {
 
 	return false
 }
-
-
-
